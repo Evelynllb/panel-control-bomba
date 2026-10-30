@@ -1,72 +1,332 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Control Inteligente de Bombas</title>
+
+<title>Sistema Inteligente de Control de Bomba de Agua</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#172b3a}
-header{background:#123b5d;color:white;padding:22px;text-align:center}
-header h1{margin:0;font-size:24px}
-header p{margin:8px 0 0;color:#d7e8f5}
-main{max-width:950px;margin:22px auto;padding:12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.card{background:white;padding:20px;border-radius:14px;box-shadow:0 3px 12px #00000012}
-.card h2{font-size:17px;margin:0 0 15px;color:#245477}
-.value{font-size:30px;font-weight:bold}
-.status{font-weight:bold;color:#64748b}
-.indicator{display:inline-block;width:12px;height:12px;border-radius:50%;background:#94a3b8;margin-right:8px}
-.level{height:15px;background:#dce6ee;border-radius:20px;overflow:hidden;margin-top:12px}
-.level span{display:block;width:0;height:100%;background:#159bd0}
-.full{grid-column:1/-1}
-.note{font-size:13px;color:#64748b}
-footer{text-align:center;color:#64748b;padding:25px;font-size:13px}
-@media(max-width:600px){
-.grid{grid-template-columns:1fr}
-.full{grid-column:auto}
-header h1{font-size:20px}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #edf3f8;
+  color: #19364d;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: linear-gradient(120deg, #102b46, #155779);
+  color: white;
+  padding: 25px 5%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  background: #1c607b;
+  border-radius: 13px;
+  padding: 12px;
+  font-size: 27px;
+}
+
+.brand h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.brand small {
+  color: #b8d7e6;
+}
+
+header h1 {
+  margin: 28px 0 8px;
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+header p {
+  margin: 0;
+  color: #b8d7e6;
+}
+
+main {
+  max-width: 1100px;
+  margin: 25px auto;
+  padding: 0 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e0eaf0;
+  border-radius: 17px;
+  padding: 21px;
+  box-shadow: 0 5px 18px #19364d0a;
+}
+
+.card h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+  color: #34576e;
+}
+
+.big {
+  font-size: 32px;
+  font-weight: bold;
+  color: #143d5b;
+  margin: 8px 0;
+}
+
+.muted {
+  color: #8297a7;
+  font-size: 13px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: #edf3f8;
+  color: #627b8d;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.water-layout {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.tank {
+  height: 150px;
+  width: 90px;
+  border: 4px solid #8ab7c9;
+  border-radius: 13px;
+  position: relative;
+  overflow: hidden;
+  background: #f3fbfd;
+  flex-shrink: 0;
+}
+
+.water {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(#50d3e1, #168ebd);
+}
+
+.water::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  height: 10px;
+  width: 100%;
+  background: #69dce7;
+  border-radius: 50%;
+}
+
+.levelbar {
+  height: 9px;
+  background: #e8f0f4;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.levelbar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #20b6d1;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.sensor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf1f4;
+  gap: 10px;
+}
+
+.sensor:last-child {
+  border: 0;
+}
+
+.dot {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #aab9c3;
+  margin-right: 9px;
+}
+
+.status {
+  font-weight: bold;
+  color: #718797;
+}
+
+.mode {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode span {
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: #edf3f7;
+  color: #647c8d;
+  font-size: 13px;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #8498a7;
+  font-size: 12px;
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  .water-layout {
+    gap: 18px;
+  }
 }
 </style>
 </head>
+
 <body>
+
 <header>
-<h1>💧 Control Inteligente de Bombas</h1>
-<p>Monitoreo del sistema de almacenamiento de agua</p>
+  <div class="brand">
+    <div class="logo">💧</div>
+
+  <h1>Sistema Inteligente de Control de Bomba de Agua</h1>
+  <p>Monitoreo y control inteligente del almacenamiento de agua</p>
 </header>
+
 <main>
-<div class="grid">
-<section class="card">
-<h2>💧 Nivel de agua</h2>
-<div class="value" id="nivel">-- %</div>
-<div class="level"><span id="barra"></span></div>
-<p class="status">Nivel recibido desde el ESP32</p>
-</section>
-<section class="card">
-<h2>⚙️ Estado de la bomba</h2>
-<div class="value status" id="bomba">Sin datos</div>
-<p class="note">Estado de funcionamiento</p>
-</section>
-<section class="card">
-<h2>📡 Sensores de nivel</h2>
-<p><span class="indicator" id="bajo"></span> Nivel bajo</p>
-<p><span class="indicator" id="medio"></span> Nivel medio</p>
-<p><span class="indicator" id="alto"></span> Nivel alto</p>
-</section>
-<section class="card">
-<h2>🔄 Modo de operación</h2>
-<div class="value status" id="modo">Sin datos</div>
-<p class="note">Modo local o IoT</p>
-</section>
-<section class="card full">
-<h2>📶 Conexión y alarmas</h2>
-<p><span class="indicator" id="conexion"></span><span id="estadoConexion">Esperando conexión</span></p>
-<p>Alarma: <strong id="alarma">Sin datos</strong></p>
-<p class="note">Los indicadores se actualizarán cuando configuremos la conexión segura con Blynk.</p>
-</section>
-</div>
+  <div class="grid">
+
+    <section class="card">
+      <h3>💧 Nivel del depósito</h3>
+
+      <div class="water-layout">
+        <div class="tank">
+          <div class="water" id="water"></div>
+        </div>
+
+        <div>
+          <div class="big" id="nivel">--%</div>
+          <span class="tag">Nivel de agua</span>
+          <div class="levelbar">
+            <span id="barra"></span>
+          </div>
+          <p class="muted">Lectura del sistema ESP32</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>⚙️ Estado de la bomba</h3>
+      <div class="big status" id="bomba">Sin datos</div>
+      <span class="tag">Bomba de agua 12V</span>
+      <p class="muted">Estado de funcionamiento</p>
+    </section>
+
+    <section class="card">
+      <h3>📡 Sensores de nivel</h3>
+
+      <div class="sensor">
+        <span><i class="dot" id="bajo"></i>Nivel bajo </span>
+        <b id="vBajo">--</b>
+      </div>
+
+      <div class="sensor">
+        <span><i class="dot" id="medio"></i>Nivel medio </span>
+        <b id="vMedio">--</b>
+      </div>
+
+      <div class="sensor">
+        <span><i class="dot" id="alto"></i>Nivel alto </span>
+        <b id="vAlto">--</b>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>🔄 Modo de operación</h3>
+      <div class="big status" id="modo">Sin datos</div>
+
+      <div class="mode">
+        <span>LOCAL</span>
+        <span>IoT</span>
+      </div>
+
+      <p class="muted">Modo de funcionamiento del sistema</p>
+    </section>
+
+    <section class="card full">
+      <h3>📶 Conectividad y seguridad</h3>
+
+      <div class="sensor">
+        <span>Conexión ESP32 / Blynk</span>
+        <b id="conexion">Sin datos</b>
+      </div>
+
+      <div class="sensor">
+        <span>Estado general</span>
+        <b id="estado">Sin datos</b>
+      </div>
+
+      <div class="sensor">
+        <span>Alarma</span>
+        <b id="alarma">Sin datos</b>
+      </div>
+
+      <p class="muted">
+        Los datos se mostrarán al establecer la conexión segura con Blynk.
+      </p>
+    </section>
+
+  </div>
 </main>
-<footer>Proyecto universitario · Sistema Inteligente para el Control de Bombas de Agua</footer>
+
+<footer>
+<br>
+  Sistema Inteligente de Control de Bomba de Agua
+</footer>
+
 </body>
 </html>
