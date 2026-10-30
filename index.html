@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Inteligente de Bombas</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#172b3a}
+header{background:#123b5d;color:white;padding:22px;text-align:center}
+header h1{margin:0;font-size:24px}
+header p{margin:8px 0 0;color:#d7e8f5}
+main{max-width:950px;margin:22px auto;padding:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:14px;box-shadow:0 3px 12px #00000012}
+.card h2{font-size:17px;margin:0 0 15px;color:#245477}
+.value{font-size:30px;font-weight:bold}
+.status{font-weight:bold;color:#64748b}
+.indicator{display:inline-block;width:12px;height:12px;border-radius:50%;background:#94a3b8;margin-right:8px}
+.level{height:15px;background:#dce6ee;border-radius:20px;overflow:hidden;margin-top:12px}
+.level span{display:block;width:0;height:100%;background:#159bd0}
+.full{grid-column:1/-1}
+.note{font-size:13px;color:#64748b}
+footer{text-align:center;color:#64748b;padding:25px;font-size:13px}
+@media(max-width:600px){
+.grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+header h1{font-size:20px}
+}
+</style>
+</head>
+<body>
+<header>
+<h1>💧 Control Inteligente de Bombas</h1>
+<p>Monitoreo del sistema de almacenamiento de agua</p>
+</header>
+<main>
+<div class="grid">
+<section class="card">
+<h2>💧 Nivel de agua</h2>
+<div class="value" id="nivel">-- %</div>
+<div class="level"><span id="barra"></span></div>
+<p class="status">Nivel recibido desde el ESP32</p>
+</section>
+<section class="card">
+<h2>⚙️ Estado de la bomba</h2>
+<div class="value status" id="bomba">Sin datos</div>
+<p class="note">Estado de funcionamiento</p>
+</section>
+<section class="card">
+<h2>📡 Sensores de nivel</h2>
+<p><span class="indicator" id="bajo"></span> Nivel bajo</p>
+<p><span class="indicator" id="medio"></span> Nivel medio</p>
+<p><span class="indicator" id="alto"></span> Nivel alto</p>
+</section>
+<section class="card">
+<h2>🔄 Modo de operación</h2>
+<div class="value status" id="modo">Sin datos</div>
+<p class="note">Modo local o IoT</p>
+</section>
+<section class="card full">
+<h2>📶 Conexión y alarmas</h2>
+<p><span class="indicator" id="conexion"></span><span id="estadoConexion">Esperando conexión</span></p>
+<p>Alarma: <strong id="alarma">Sin datos</strong></p>
+<p class="note">Los indicadores se actualizarán cuando configuremos la conexión segura con Blynk.</p>
+</section>
+</div>
+</main>
+<footer>Proyecto universitario · Sistema Inteligente para el Control de Bombas de Agua</footer>
+</body>
+</html>
